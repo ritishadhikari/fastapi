@@ -1,0 +1,13 @@
+If there are dynamic parameters, it is a best practice to keep it
+after the standard function definition
+```
+# earlier
+@app.get("books/my_book"):
+def read_all_books(my_book):
+    return {"book":"my_book"}
+
+# later
+@app.get("books/{dynamic_book_name}"):
+def read_all_books(dynamic_book_name):
+    return {"dynamic_book":dynamic_book_name}
+```
