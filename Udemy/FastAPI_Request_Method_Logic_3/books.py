@@ -27,7 +27,7 @@ async def read_book(dynamic_param:str):
 
 # Query Parameters with Path Parameters
 # http://127.0.0.1:8000/books/Title%20Two?category=science
-@app.get("/books/{author_name}/")
+@app.get("/books/{author_name}")
 async def read_book_by_author(author_name:str, category:str):
     categories=[]
     for book in BOOKS:
@@ -49,3 +49,21 @@ async def update_book(updated_book:dict=Body()):
         if BOOKS[i].get('title').casefold()==updated_book.get('title').casefold():
             BOOKS[i]=updated_book
     return BOOKS
+
+@app.delete(path="/books/delete_book/{book_title}")
+async def delete_book(book_title:str):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get("title").casefold()==book_title.casefold():
+            BOOKS.pop(i)
+            break
+    return BOOKS
+
+
+@app.get("/book_author/{author_name}")
+async def get_books_by_writer(author_name:str):
+    books_by_author=[]
+    for book in BOOKS:
+        print(book)
+        if book.get("author").casefold()==author_name.casefold():
+            books_by_author.append(book)
+    return books_by_author

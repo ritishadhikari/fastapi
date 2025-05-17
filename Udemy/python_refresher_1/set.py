@@ -14,3 +14,6 @@ print(myset)
 
 myset.update({3,4,5}) # adds multiple elements to the set
 print(myset)
+
+myset.remove(3)  # removes 3 from the set
+print(myset)    
