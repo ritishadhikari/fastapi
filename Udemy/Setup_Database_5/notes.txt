@@ -1,0 +1,4 @@
+sqlite3 .\todos.db: Open sqlit in terminal with the name of the db
+
+Various modes in sqlite are:
+.mode=columns, box, tables, markdown
