@@ -5,6 +5,8 @@ from database import SessionLocal
 from typing import Annotated
 from starlette import status
 from pydantic import BaseModel, Field
+from .auth import get_current_user
+from typing import Annotated
 
 router=APIRouter()
 
@@ -23,8 +25,10 @@ class TodoRequest(BaseModel):
 
 @router.get(path="/",status_code=status.HTTP_200_OK)
 # async def read_all(db: Annotated[ Session, Depends(dependency=get_db) ]):
-async def read_all(db: Session = Depends(dependency=get_db) ):
-    return db.query(Todos).all()
+async def read_all(
+    user:dict=Depends(dependency=get_current_user),
+    db: Session = Depends(dependency=get_db) ):
+    return db.query(Todos).filter(Todos.owner_id==user.get('id')).all()
 
 @router.get(path="/todo/{todo_id}",status_code=status.HTTP_200_OK)
 async def read_todo(
@@ -39,8 +43,14 @@ async def read_todo(
 
 @router.post(path="/todo",status_code=status.HTTP_201_CREATED)
 async def create_todo(todo_request:TodoRequest,
-                      db: Session = Depends(dependency=get_db) ):
-    todo_model=Todos(**todo_request.model_dump())
+                      user:Annotated[dict,Depends(dependency=get_current_user)],
+                      db:Annotated[Session,Depends(dependency=get_db)]
+                      ):
+    print("coming here")
+    if user is None:
+        raise HTTPException(status_code=401,
+                            detail="Authentication Failed")
+    todo_model=Todos(**todo_request.model_dump(),owner_id=user.get('id'))
     db.add(instance=todo_model)
     db.commit()
 
@@ -50,7 +60,7 @@ async def update_todo(
     todo_id:int=Path(gt=0),
     db: Session = Depends(dependency=get_db)
 ):
-    todo_model=db.query(Todos).filter(Todos.idn==todo_id).first()
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
     if todo_model is None:
         return HTTPException(status_code=404,detail="Record not found for update")
     else:
@@ -66,9 +76,9 @@ async def delete(
     todo_id:int=Path(gt=0),
     db: Session = Depends(dependency=get_db)
     ):
-    todo_model=db.query(Todos).filter(Todos.idn==todo_id).first()
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
     if todo_model is None:
         return HTTPException(status_code=404,detail="Record not found for delete")
     else:
-        db.query(Todos).filter(Todos.idn==todo_id).delete()
+        db.query(Todos).filter(Todos.id==todo_id).delete()
         db.commit()

@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
 class Users(Base):
     __tablename__="users"
-    idu=Column(Integer,primary_key=True,index=True)
+    id=Column(Integer,primary_key=True,index=True)
     email=Column(String, unique=True)
     username=Column(String,unique=True)
     first_name=Column(String)
@@ -14,10 +14,10 @@ class Users(Base):
 
 class Todos(Base):
     __tablename__="todos"
-    idn=Column(Integer,primary_key=True,index=True)
+    id=Column(Integer,primary_key=True,index=True)
     title=Column(String)
     description=Column(String)
     priority=Column(Integer)
     complete=Column(Boolean,default=False)
-    owner_id=Column(Integer, ForeignKey(column="users.idu"))
+    owner_id=Column(Integer, ForeignKey(column="users.id"))
 

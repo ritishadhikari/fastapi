@@ -48,10 +48,11 @@ async def authenticate_user(username:str, password: str, db):
     else: 
         return False
 
-async def create_access_token(username:str, user_id: int, expires_delta: timedelta):
+async def create_access_token(username:str, user_id: int, 
+                              expires_delta: timedelta):
     "Encoding a JWT"
     encode={"sub":username,"id":user_id}
-    expires=datetime.now(tz=timezone.utc) 
+    expires=datetime.now(tz=timezone.utc) + expires_delta
     encode.update({'exp':expires})
     return jwt.encode(claims=encode,
                       key=SECRET_KEY,
@@ -112,7 +113,7 @@ async def login_for_access_token(
     else:
         token=await create_access_token(
                                 username=user.username,
-                                user_id=user.idu,
+                                user_id=user.id,
                                 expires_delta=timedelta(minutes=20)
                                 )
         return {"access_token":token,"token_type":'bearer'}
