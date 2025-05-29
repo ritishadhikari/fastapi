@@ -49,10 +49,10 @@ async def authenticate_user(username:str, password: str, db):
         return False
 
 async def create_access_token(username:str, user_id: int, 
-                              expires_delta: timedelta):
+                              role:str, expires_delta: timedelta):
     # print(f"UserName:{username}, UserId:{user_id}")
     "Encoding a JWT"
-    encode={"sub":username,"id":user_id}
+    encode={"sub":username,"id":user_id,"role":role}
     expires=datetime.now(tz=timezone.utc) + expires_delta
     encode.update({'exp':expires})
     return jwt.encode(claims=encode,
@@ -67,8 +67,9 @@ async def get_current_user(
     try:
         payload=jwt.decode(token=token,key=SECRET_KEY,algorithms=[ALGORITHM])
         username: str=payload.get('sub')  # fetches the username
+        user_role:str=payload.get("role")
         user_id: int=payload.get("id")
-        return {"username":username,"id":user_id}
+        return {"username":username,"id":user_id,"user_role":user_role}
     except JWTError:
         raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -115,6 +116,7 @@ async def login_for_access_token(
         token=await create_access_token(
                                 username=user.username,
                                 user_id=user.id,
+                                role=user.role,
                                 expires_delta=timedelta(minutes=20)
                                 )
         return {"access_token":token,"token_type":'bearer'}
