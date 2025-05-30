@@ -1,0 +1,55 @@
+sqlite3 .\todos.db: Open sqlit in terminal with the name of the db
+
+Various modes in sqlite are:
+.mode=columns, box, tables, markdown
+
+JSON Web Token:
+    - A JSON Web Token is created of three separate parts separated by dots (.), which
+    includes:
+        - Header : (a)
+            - consists of two parts:
+                - The algorithm (alg) for signing
+                - The specific type (typ) of 
+            - ex:
+                ```
+                    {
+                        "alg":"HS256",
+                        "type":"JWT"
+                    }
+                ```
+        - Payload : (b)
+            - It consists of the data. 
+            - The payloads data contains claims, and there are three different types
+            of claims
+                - Registered
+                - Public
+                - Private
+            - The JWT payload is then encoded using Base64 to create the second part
+            of the JWT(b)
+            - ex:
+                ```
+                    {
+                        "sub":"12345678",
+                        "name":"Eric Roby",
+                        "given_name":"Eric",
+                        "family_name":"Roby",
+                        "email":"codingwithRoby@gmail.com",
+                        "admin": true
+                    }
+                ```
+        - Signature : (c)
+            - A JWT signature is created by using the algorithm in the header to hash
+            out the encoded header, encoded payload with a secret
+            - The secret can be anything, but is saved somewhere on the server that
+            the client does not have access to
+            - ex:
+            ```
+                HMACSHA256(
+                    base64UrlEncode(header) + "." +
+                    base64UrlEncode(payload),
+                    learnonline
+                )
+            ```
+        - ex. aaaaaaaa.bbbbbbbbb.ccccccccc
+    - A JWT header consists of 
+    
