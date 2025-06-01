@@ -1,0 +1,24 @@
+Alembic is a lightweight database migration tool for when using SQL Alchemy.
+
+It is a powerful migration tool that allows us to modify our database schemes
+
+Migration tools allow us to plan, transfer and upgrade resources within 
+databases, and hence our application evolves, our database will need to evolve as
+well
+
+It helps us to be able to keep modifying our database to keep up with rapid development
+requirements
+
+Alembic allows you to change a SQLAlchemy database table after it has been 
+created
+
+Alembic provides the creation and invocation of change management scripts which
+allows you to be able to create migration environments and be able to change data
+how you like
+
+alembic revision -m "Create Phone Number for user column" : The first command from the
+terminal. It will create a python script which will consists of upgrade and downgrade 
+functions
+
+alembic upgrade <upgrade_id> -> Upgrades the columns which was added in the
+.py file
