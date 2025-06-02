@@ -41,3 +41,7 @@ With Pytest we can validate:
     - Greater than and less than
         - assert 7>4
         - assert 4<7
+    - Lists
+        - numlist=[2,3,4]; anyList=[False,True]; assert 2 in numlist
+        - assert all(numlist)
+        - assert any(anyList)
