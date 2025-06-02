@@ -22,3 +22,22 @@ functions
 
 alembic upgrade <upgrade_id> -> Upgrades the columns which was added in the
 .py file
+
+alembic downgrade -1 : Downgrades from the last upgrade through the activities
+mentioned in the downgrade function in .py file in the alembic/versions file path
+
+With Pytest we can validate:
+    - Integers
+        - assert 3==3
+    - Instances
+        - assert isInstance('this is a string',str)
+        - assert notInstance('10', int)
+    - Booleans
+        - validated=True; assert validated is True
+        - assert ("hello"=="world") is False
+    - Types
+        - assert type('Hello' is str)
+        - assert type('World' is not int)
+    - Greater than and less than
+        - assert 7>4
+        - assert 4<7
