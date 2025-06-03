@@ -45,3 +45,5 @@ With Pytest we can validate:
         - numlist=[2,3,4]; anyList=[False,True]; assert 2 in numlist
         - assert all(numlist)
         - assert any(anyList)
+
+pytest --disable-warnings: Disable Warnings from pytest
