@@ -78,7 +78,7 @@ async def update_todo(
             .filter(Todos.owner_id==user.get('id'))\
             .first()
     if todo_model is None:
-        return HTTPException(status_code=404,detail="Record not found for update")
+        raise HTTPException(status_code=404,detail="Record not found for update")
     else:
         todo_model.title=todo_request.title
         todo_model.complete=todo_request.complete
@@ -99,9 +99,13 @@ async def delete(
     todo_model=db.query(Todos).filter(Todos.id==todo_id)\
         .filter(Todos.owner_id==user.get('id'))\
         .first()
+
+    
     if todo_model is None:
-        return HTTPException(status_code=404,detail="Record not found for delete")
+        # "Entering the None block"
+        raise HTTPException(status_code=404,detail="Record not found for delete")
     else:
+        # "Entering the else block"
         db.query(Todos).filter(Todos.id==todo_id)\
             .filter(Todos.owner_id==user.get('id'))\
             .delete()
