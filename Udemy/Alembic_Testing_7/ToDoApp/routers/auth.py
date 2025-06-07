@@ -62,7 +62,7 @@ async def create_access_token(username:str, user_id: int,
 
 
 async def get_current_user(
-                    token: str=Depends(oauth2_bearer)
+                    token: str=Depends(dependency=oauth2_bearer)
                     ):
     "Decoding a JWT"
     try:
@@ -70,6 +70,11 @@ async def get_current_user(
         username: str=payload.get('sub')  # fetches the username
         user_role:str=payload.get("role")
         user_id: int=payload.get("id")
+        if username is None or user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate user."
+                )
         return {"username":username,"id":user_id,"user_role":user_role}
     except JWTError:
         raise HTTPException(

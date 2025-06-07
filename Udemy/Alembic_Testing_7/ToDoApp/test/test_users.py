@@ -17,22 +17,20 @@ def test_return_user(test_user):
     assert response.json()['last_name'] == 'adhikaritest'
     assert response.json()['role'] == 'admin'
     assert response.json()['phone_number'] == '8665537373'
+ 
 
-## All the below tests will run, but it will only run one at a time due to unique key constraint and also the database testdb.db needs to be deleted
-    
-
-# def test_change_password_success(test_user):
-#     response=client.put(url="/user/password",json={"password":"ritishadhikaritest",
-#                                                   "new_password":"ritishadhikaritest1"})
-#     assert response.status_code==status.HTTP_204_NO_CONTENT
+def test_change_password_success(test_user):
+    response=client.put(url="/user/password",json={"password":"ritishadhikaritest",
+                                                  "new_password":"ritishadhikaritest1"})
+    assert response.status_code==status.HTTP_204_NO_CONTENT
 
     
-# def test_change_password_invalid_current_password(test_user):
-#     response=client.put(url="/user/password",json={"password":"ritishadhikaritest1",  # 1 at the last should not be there
-#                                                   "new_password":"ritishadhikaritest2"})
-#     assert response.status_code==status.HTTP_401_UNAUTHORIZED
-#     assert response.json()==dict(detail="Original Password is incorrect")
+def test_change_password_invalid_current_password(test_user):
+    response=client.put(url="/user/password",json={"password":"ritishadhikaritest1",  # 1 at the last should not be there
+                                                  "new_password":"ritishadhikaritest2"})
+    assert response.status_code==status.HTTP_401_UNAUTHORIZED
+    assert response.json()==dict(detail="Original Password is incorrect")
 
-# def test_change_phone_number_success(test_user):
-#     response=client.put(url='/user/phonenumber/9803765342')
-#     assert response.status_code==status.HTTP_204_NO_CONTENT
+def test_change_phone_number_success(test_user):
+    response=client.put(url='/user/phonenumber/9803765342')
+    assert response.status_code==status.HTTP_204_NO_CONTENT

@@ -82,4 +82,5 @@ def test_user():
     
     with engine.connect() as connection:
         connection.execute(statement=text(text="DELETE FROM users;")) 
+        connection.commit()
 
