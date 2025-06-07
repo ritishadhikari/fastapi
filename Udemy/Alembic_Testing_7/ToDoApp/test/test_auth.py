@@ -74,6 +74,9 @@ async def test_get_current_user_missing_payload():
     token=jwt.encode(claims=encode,
                      key=SECRET_KEY,
                      algorithm=ALGORITHM)
+    
+    # writting with a context manager since get_current_user is not written 
+    # with fastapi (@app) whose errors could be directly handled through FastAPI
     with pytest.raises(HTTPException) as excinfo:
         await get_current_user(token=token)
 
