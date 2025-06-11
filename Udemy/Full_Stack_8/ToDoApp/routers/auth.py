@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends,HTTPException
+from fastapi import APIRouter,Depends,HTTPException, Request
 from pydantic import BaseModel
 from ..models import Users
 from ..database import SessionLocal
@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import timedelta,datetime,timezone
+from fastapi.templating import Jinja2Templates
 
 router=APIRouter(
     prefix="/auth",
@@ -16,6 +17,7 @@ router=APIRouter(
 
 SECRET_KEY="3f51b4aec2fb2fd2c1767b39be406319de964be63efdade05913500812f275fe"
 ALGORITHM="HS256"
+
 
 bcrypt_context=CryptContext(schemes=['bcrypt'],deprecated='auto')
 
@@ -29,6 +31,8 @@ def get_db():
     finally:
         db.close()
 
+
+
 class CreateUserRequest(BaseModel):
     username: str
     email: str
@@ -41,6 +45,26 @@ class CreateUserRequest(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+templates=Jinja2Templates(directory="ToDoApp/templates") 
+
+##### Pages ####################
+@router.get(path="/login-page")
+def render_login_page(request:Request):
+    return templates.TemplateResponse(
+                                    "login.html", 
+                                    {'request':request}
+                                      )
+
+@router.get(path="/register-page")
+def render_login_page(request:Request):
+    return templates.TemplateResponse(
+                                    "register.html", 
+                                    {'request':request}
+                                      )
+
+
+##### Endpoints ################
 
 async def authenticate_user(username:str, password: str, db):
     user=db.query(Users).filter(Users.username==username).first()
