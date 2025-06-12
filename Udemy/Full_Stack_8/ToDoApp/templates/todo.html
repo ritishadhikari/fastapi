@@ -39,18 +39,18 @@
                         <td>{{loop.index}}</td>
                         <td class="strike-through-td">{{todo.title}}</td>
                         <td>
-                            <button onclick="window.location.href='edit-todo-page/{{todo.id}}'" type="button" class="btn btn-info">
-                                Edit
-                            </button>
+                            <button onclick="window.location.href='edit-todo-page/{{todo.id}}'"
+                                type="button" class="btn btn-info">
+                            Edit
+                        </button>
                         </td>
                     </tr>
                     {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="add-todo-page" class="btn btn-primary">Add a new todo!</a>
+            <a href="/todos/add-todo-page" class="btn btn-primary">Add a new todo!</a>
 
         </div>
-
     </div>
 </div>

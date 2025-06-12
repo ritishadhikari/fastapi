@@ -58,6 +58,47 @@ async def render_todo_page(request:Request,
             )
     except:
         return redirect_to_login()
+    
+
+@router.get("/add-todo-page")
+async def render_todo_page(request:Request):
+    try:
+        user=await get_current_user(token=request.cookies.get('access_token'))
+        if user is None:
+            return redirect_to_login()
+        else:
+            return templates.TemplateResponse("add_todo.html",
+                                              {
+                                                  "request":request,
+                                                  "user":user
+                                              }
+            )
+    except:
+        return redirect_to_login()
+
+# does not work
+@router.get(path="edit-todo-page/{todo_id}")
+async def render_edit_todo_page(request:Request, 
+                                todo_id:int,
+                                db:Annotated[Session,Depends(dependency=get_db)]
+                                ):
+    try:
+        user=await get_current_user(token=request.cookies.get('access_token'))
+        if user is None:
+            return redirect_to_login()
+        else:
+            todo=db.query(Todos).filter(Todos.id==todo_id).first()
+            return templates.TemplateResponse("edit-todo.html",
+                                              {
+                                                  "request":request,
+                                                  "todos":todo,
+                                                  "user":user
+                                              }
+            )
+    except:
+        return redirect_to_login()
+
+
 
 ### Endoints
 @router.get(path="/",status_code=status.HTTP_200_OK)
