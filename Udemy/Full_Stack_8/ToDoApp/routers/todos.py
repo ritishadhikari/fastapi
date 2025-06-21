@@ -134,7 +134,6 @@ async def create_todo(todo_request:TodoRequest,
                       user:Annotated[dict,Depends(dependency=get_current_user)],
                       db:Annotated[Session,Depends(dependency=get_db)]
                       ):
-    print("coming here")
     if user is None:
         raise HTTPException(status_code=401,
                             detail="Authentication Failed")
